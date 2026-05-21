@@ -1,0 +1,108 @@
+{
+  "drivers": [
+    {
+      "id": "D001",
+      "name": "Alice Johnson",
+      "earliest_start_time": "08:00",
+      "latest_end_time": "18:00",
+      "max_hours": 8,
+      "home_location": { "lat": 37.7749, "lon": -122.4194 },
+      "license_class": "A",
+      "available": true
+    },
+    {
+      "id": "D002",
+      "name": "Bob Smith",
+      "earliest_start_time": "07:00",
+      "latest_end_time": "17:00",
+      "max_hours": 9,
+      "home_location": { "lat": 37.8044, "lon": -122.2712 },
+      "license_class": "B",
+      "available": true
+    },
+    {
+      "id": "D003",
+      "name": "Carol White",
+      "earliest_start_time": "09:00",
+      "latest_end_time": "19:00",
+      "max_hours": 7,
+      "home_location": { "lat": 37.6879, "lon": -122.4702 },
+      "license_class": "A",
+      "available": false
+    },
+    {
+      "id": "D004",
+      "name": "David Lee",
+      "earliest_start_time": "06:00",
+      "latest_end_time": "16:00",
+      "max_hours": 10,
+      "home_location": { "lat": 37.6585, "lon": -122.0758 },
+      "license_class": "A",
+      "available": true
+    },
+    {
+      "id": "D005",
+      "name": "Eve Martinez",
+      "earliest_start_time": "10:00",
+      "latest_end_time": "20:00",
+      "max_hours": 8,
+      "home_location": { "lat": 37.5485, "lon": -121.9886 },
+      "license_class": "B",
+      "available": true
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "V001",
+      "type": "truck",
+      "capacity_kg": 5000,
+      "capacity_vol_m3": 20,
+      "fuel_type": "diesel",
+      "max_speed_kmh": 90,
+      "requires_license": "A",
+      "cost_per_km": 1.5
+    },
+    {
+      "id": "V002",
+      "type": "van",
+      "capacity_kg": 1500,
+      "capacity_vol_m3": 8,
+      "fuel_type": "electric",
+      "max_speed_kmh": 120,
+      "requires_license": "B",
+      "cost_per_km": 0.8
+    },
+    {
+      "id": "V003",
+      "type": "truck",
+      "capacity_kg": 8000,
+      "capacity_vol_m3": 35,
+      "fuel_type": "diesel",
+      "max_speed_kmh": 80,
+      "requires_license": "A",
+      "cost_per_km": 2.1
+    },
+    {
+      "id": "V004",
+      "type": "van",
+      "capacity_kg": 2000,
+      "capacity_vol_m3": 10,
+      "fuel_type": "hybrid",
+      "max_speed_kmh": 110,
+      "requires_license": "B",
+      "cost_per_km": 1.0
+    }
+  ],
+  "restrictions": [
+    { "driver_id": "D001", "vehicle_id": "V003", "reason": "weight limit" },
+    { "driver_id": "D002", "vehicle_id": "V001", "reason": "license mismatch" },
+    { "driver_id": "D003", "vehicle_id": "V002", "reason": "training required" },
+    { "driver_id": "D004", "vehicle_id": "V004", "reason": "pending certification" }
+  ],
+  "depot": {
+    "id": "DEP1",
+    "name": "Main Depot",
+    "lat": 37.7749,
+    "lon": -122.4194
+  }
+}

@@ -1,0 +1,172 @@
+dataframes:
+  df_drivers:
+    entity: drivers
+    aliases:
+    - driver
+    - drivers
+    row_count: 5
+    columns:
+      id:
+        dtype: object
+        sample_values:
+        - D001
+        - D002
+        - D003
+        description: ''
+      name:
+        dtype: object
+        sample_values:
+        - Alice Johnson
+        - Bob Smith
+        - Carol White
+        description: ''
+      earliest_start_time:
+        dtype: object
+        sample_values:
+        - 08:00
+        - 07:00
+        - 09:00
+        description: ''
+      latest_end_time:
+        dtype: object
+        sample_values:
+        - '18:00'
+        - '17:00'
+        - '19:00'
+        description: ''
+      max_hours:
+        dtype: int64
+        sample_values:
+        - 8
+        - 9
+        - 7
+        description: ''
+      license_class:
+        dtype: object
+        sample_values:
+        - A
+        - B
+        - A
+        description: ''
+      available:
+        dtype: bool
+        sample_values:
+        - true
+        - true
+        - false
+        description: ''
+      home_location.lat:
+        dtype: float64
+        sample_values:
+        - 37.7749
+        - 37.8044
+        - 37.6879
+        description: ''
+      home_location.lon:
+        dtype: float64
+        sample_values:
+        - -122.4194
+        - -122.2712
+        - -122.4702
+        description: ''
+  df_vehicles:
+    entity: vehicles
+    aliases:
+    - vehicle
+    - vehicles
+    - truck
+    row_count: 4
+    columns:
+      id:
+        dtype: object
+        sample_values:
+        - V001
+        - V002
+        - V003
+        description: ''
+      type:
+        dtype: object
+        sample_values:
+        - truck
+        - van
+        - truck
+        description: ''
+      capacity_kg:
+        dtype: int64
+        sample_values:
+        - 5000
+        - 1500
+        - 8000
+        description: ''
+      capacity_vol_m3:
+        dtype: int64
+        sample_values:
+        - 20
+        - 8
+        - 35
+        description: ''
+      fuel_type:
+        dtype: object
+        sample_values:
+        - diesel
+        - electric
+        - diesel
+        description: ''
+      max_speed_kmh:
+        dtype: int64
+        sample_values:
+        - 90
+        - 120
+        - 80
+        description: ''
+      requires_license:
+        dtype: object
+        sample_values:
+        - A
+        - B
+        - A
+        description: ''
+      cost_per_km:
+        dtype: float64
+        sample_values:
+        - 1.5
+        - 0.8
+        - 2.1
+        description: ''
+  df_vehicle_driver_restrictions:
+    entity: driver-vehicle restrictions
+    aliases:
+    - restriction
+    - restrictions
+    row_count: 4
+    columns:
+      driver_id:
+        dtype: object
+        sample_values:
+        - D001
+        - D002
+        - D003
+        description: ''
+      vehicle_id:
+        dtype: object
+        sample_values:
+        - V003
+        - V001
+        - V002
+        description: ''
+      reason:
+        dtype: object
+        sample_values:
+        - weight limit
+        - license mismatch
+        - training required
+        description: ''
+join_keys:
+- left: df_drivers
+  right: df_vehicle_driver_restrictions
+  'on': null
+  description: shared driver id column (auto-detected at runtime)
+- left: df_vehicles
+  right: df_vehicle_driver_restrictions
+  'on': null
+  description: shared vehicle id column (auto-detected at runtime)
