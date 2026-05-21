@@ -39,26 +39,43 @@ def _create_llm():
     Try LlamaCPP → OpenAI → None (demo mode).
     Returns an LlamaIndex LLM instance, or None for demo stub mode.
     """
-    if Path(DEFAULT_MODEL_PATH).exists():
+    model_path = Path(DEFAULT_MODEL_PATH)
+
+    # ── Option 1: Local LlamaCPP ─────────────────────────────────────────────
+    if model_path.exists():
         try:
             from llama_index.llms.llama_cpp import LlamaCPP  # type: ignore
-            logger.info("Loading local LlamaCPP model from %s …", DEFAULT_MODEL_PATH)
-            return LlamaCPP(
-                model_path=DEFAULT_MODEL_PATH,
+            logger.info("Loading local LlamaCPP model from %s …", model_path)
+            llm = LlamaCPP(
+                model_path=str(model_path),
                 temperature=0.1,
                 max_new_tokens=512,
                 context_window=4096,
                 verbose=False,
             )
+            logger.info("✓ LlamaCPP model loaded successfully.")
+            return llm
         except ImportError:
             logger.warning(
-                "llama-index-llms-llama-cpp not installed. "
-                "Trying OpenAI next. "
-                "Install: pip install llama-index-llms-llama-cpp"
+                "llama-index-llms-llama-cpp is not installed.\n"
+                "  Run: pip install llama-index-llms-llama-cpp\n"
+                "  Falling back to next LLM option."
             )
         except Exception as exc:
-            logger.warning("Failed to load LlamaCPP model (%s). Trying OpenAI.", exc)
+            logger.warning(
+                "Failed to load LlamaCPP model (%s: %s). Trying next option.",
+                type(exc).__name__, exc,
+            )
+    else:
+        if DEFAULT_MODEL_PATH != str(Path.home() / "models" / "qwen2.5-7b-instruct-q4_k_m.gguf"):
+            # User explicitly set MODEL_PATH but the file doesn't exist — warn them
+            logger.warning(
+                "MODEL_PATH is set to '%s' but file does not exist. "
+                "Skipping LlamaCPP.",
+                DEFAULT_MODEL_PATH,
+            )
 
+    # ── Option 2: OpenAI ─────────────────────────────────────────────────────
     if os.environ.get("OPENAI_API_KEY"):
         try:
             from llama_index.llms.openai import OpenAI  # type: ignore
@@ -66,13 +83,27 @@ def _create_llm():
             return OpenAI(model="gpt-3.5-turbo", temperature=0.1)
         except ImportError:
             logger.warning(
-                "llama-index-llms-openai not installed. "
-                "Install: pip install llama-index-llms-openai"
+                "llama-index-llms-openai is not installed.\n"
+                "  Run: pip install llama-index-llms-openai\n"
+                "  Falling back to demo stub mode."
+            )
+        except Exception as exc:
+            logger.warning(
+                "Failed to init OpenAI LLM (%s: %s). Falling back to demo stub.",
+                type(exc).__name__, exc,
             )
 
+    # ── Option 3: Demo stub ───────────────────────────────────────────────────
     logger.warning(
-        "⚠  No LLM available — running in DEMO STUB mode.\n"
-        "   Set MODEL_PATH (local GGUF) or OPENAI_API_KEY to enable real queries."
+        "\n"
+        "  ╔══════════════════════════════════════════════════════════════╗\n"
+        "  ║  ⚠  No LLM configured — running in DEMO STUB mode          ║\n"
+        "  ║                                                              ║\n"
+        "  ║  To enable real NL queries, do ONE of:                      ║\n"
+        "  ║  • Local model:  export MODEL_PATH=/path/to/model.gguf      ║\n"
+        "  ║                  pip install llama-index-llms-llama-cpp      ║\n"
+        "  ║  • OpenAI:       export OPENAI_API_KEY=sk-...               ║\n"
+        "  ╚══════════════════════════════════════════════════════════════╝\n"
     )
     return None
 

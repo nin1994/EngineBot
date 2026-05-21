@@ -9,15 +9,11 @@ python-multipart>=0.0.9
 # ── LlamaIndex PandasQueryEngine ──────────────────────────────────────────────
 llama-index-core>=0.10.0
 llama-index-experimental>=0.1.0       # provides PandasQueryEngine
+polars>=0.20.0                         # required by llama-index-experimental
 
 # ── LLM backends (install the one you need) ───────────────────────────────────
-# Local GGUF model (LlamaCPP / Qwen2.5):
-#   pip install llama-index-llms-llama-cpp
-#   (may need: CMAKE_ARGS="-DLLAMA_METAL=on" pip install llama-cpp-python --force-reinstall)
-#
-# OpenAI:
-#   pip install llama-index-llms-openai
-#   export OPENAI_API_KEY=sk-...
+llama-index-llms-llama-cpp             # local GGUF model (requires llama-cpp-python)
+# llama-index-llms-openai              # uncomment if using OpenAI instead
 
 # ── CLI schema tool ───────────────────────────────────────────────────────────
 rich>=13.0                             # colored terminal output for schema_tool.py
